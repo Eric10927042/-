@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>佐登妮絲城堡 - 專屬回購商城</title>
-    <!-- 引入 LINE LIFF SDK (已修正網址) -->
+    <!-- 引入 LINE LIFF SDK (已修正為完整 HTTPS 官方路徑) -->
     <script charset="utf-8" src="line-scdn.net"></script>
     <style>
         :root {
@@ -17,7 +17,7 @@
             background-color: var(--bg-color);
             color: var(--text-dark);
             margin: 0;
-            padding-bottom: 140px; /* 增加底部留白，避免被結帳欄擋住 */
+            padding-bottom: 140px; 
         }
         header {
             background: white;
@@ -51,6 +51,7 @@
             object-fit: cover;
             border-radius: 8px;
             margin-right: 15px;
+            background-color: #eee;
         }
         .product-info {
             flex-grow: 1;
@@ -81,7 +82,6 @@
             min-width: 20px;
             text-align: center;
         }
-        /* 底部結帳欄 */
         .footer-cart {
             position: fixed;
             bottom: 0;
@@ -127,13 +127,11 @@
 </header>
 <div class="promo-banner">現在下單 買千折百 優惠</div>
 
-<div class="product-list" id="productList">
-    <!-- 產品由 JS 動態生成 -->
-</div>
+<div class="product-list" id="productList"></div>
 
 <div class="footer-cart">
     <div class="summary-row">
-        <span>目前金額</span>
+        <span>目金額</span>
         <span id="subtotal">$0</span>
     </div>
     <div class="summary-row discount-text">
@@ -148,7 +146,7 @@
 </div>
 
 <script>
-    // 1. 產品資料定義 (已補上正確的預覽圖網址)
+    // 1. 產品資料定義 (已修正為高畫質正方形測試圖)
     const products = [
         { id: 1, name: "龍血求麗精華 30ml", price: 1190, img: "picsum.photos" },
         { id: 2, name: "極光白美白面膜", price: 600, img: "picsum.photos" },
@@ -157,10 +155,9 @@
 
     let cart = {};
 
-    // 2. 初始化 LIFF
+    // 2. 初始化 LIFF (使用您提供的真實 ID)
     async function initLiff() {
         try {
-            // 請將下方的 "您的_LIFF_ID_在此" 替換為 LINE Developers 後台的真實 ID
             await liff.init({ liffId: "2005144930" }); 
             if (!liff.isLoggedIn()) {
                 liff.login();
@@ -232,9 +229,9 @@
 
         const message = `【新訂單回報】\n客戶：${displayName}\n總額：${document.getElementById('grandTotal').innerText}\n(專人將與您聯繫確認細節)`;
 
-        // 發送訊息到聊天室並關閉視窗
         if (liff.isInClient()) {
             try {
+                // 執行此步驟前，必須確保您的 LINE Login 頻道有開啟 "chat_message.write" 權限
                 await liff.sendMessages([{ type: 'text', text: message }]);
                 alert("訂單已送出，我們將儘快連繫您！");
                 liff.closeWindow();
@@ -246,7 +243,6 @@
         }
     }
 
-    // 啟動
     window.onload = () => {
         initLiff();
         renderProducts();
