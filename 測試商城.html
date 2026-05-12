@@ -138,7 +138,7 @@
     </div>
     <div class="summary-row discount-text">
         <span>活動折抵 (滿千折百)</span>
-        <span id="2005145063">-$0</span>
+        <span id="discount">-$0</span>
     </div>
     <div class="total-row">
         <span>結帳總計</span>
@@ -161,7 +161,7 @@
     async function initLiff() {
         try {
             // 請將下方的 "您的_LIFF_ID_在此" 替換為 LINE Developers 後台的真實 ID
-            await liff.init({ liffId: "您的_LIFF_ID_在此" }); 
+            await liff.init({ liffId: "2005144930" }); 
             if (!liff.isLoggedIn()) {
                 liff.login();
             }
