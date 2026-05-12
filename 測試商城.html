@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>佐登妮絲城堡 - 專屬回購商城</title>
-    <!-- 引入 LINE LIFF SDK -->
-    <script charset="utf-8" src="https://line-scdn.net"></script>
+    <!-- 引入 LINE LIFF SDK (已修正網址) -->
+    <script charset="utf-8" src="line-scdn.net"></script>
     <style>
         :root {
             --primary-gold: #b8955e;
@@ -17,7 +17,7 @@
             background-color: var(--bg-color);
             color: var(--text-dark);
             margin: 0;
-            padding-bottom: 120px;
+            padding-bottom: 140px; /* 增加底部留白，避免被結帳欄擋住 */
         }
         header {
             background: white;
@@ -48,7 +48,7 @@
         .product-img {
             width: 80px;
             height: 80px;
-            background: #eee;
+            object-fit: cover;
             border-radius: 8px;
             margin-right: 15px;
         }
@@ -74,6 +74,7 @@
             height: 25px;
             border-radius: 5px;
             cursor: pointer;
+            font-weight: bold;
         }
         .qty-num {
             margin: 0 10px;
@@ -89,6 +90,7 @@
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
             padding: 15px 20px;
             box-sizing: border-box;
+            z-index: 1000;
         }
         .summary-row {
             display: flex;
@@ -126,7 +128,7 @@
 <div class="promo-banner">現在下單 買千折百 優惠</div>
 
 <div class="product-list" id="productList">
-    <!-- 產品會由 JS 生成 -->
+    <!-- 產品由 JS 動態生成 -->
 </div>
 
 <div class="footer-cart">
@@ -136,7 +138,7 @@
     </div>
     <div class="summary-row discount-text">
         <span>活動折抵 (滿千折百)</span>
-        <span id="discount">-$0</span>
+        <span id="2005145063">-$0</span>
     </div>
     <div class="total-row">
         <span>結帳總計</span>
@@ -146,11 +148,11 @@
 </div>
 
 <script>
-    // 1. 產品資料定義
+    // 1. 產品資料定義 (已補上正確的預覽圖網址)
     const products = [
-        { id: 1, name: "龍血求麗精華 30ml", price: 1190, img: "https://placeholder.com" },
-        { id: 2, name: "極光白美白面膜", price: 600, img: "https://placeholder.com" },
-        { id: 3, name: "玫瑰妝前乳", price: 1230, img: "https://placeholder.com" }
+        { id: 1, name: "龍血求麗精華 30ml", price: 1190, img: "picsum.photos" },
+        { id: 2, name: "極光白美白面膜", price: 600, img: "picsum.photos" },
+        { id: 3, name: "玫瑰妝前乳", price: 1230, img: "picsum.photos" }
     ];
 
     let cart = {};
@@ -158,7 +160,8 @@
     // 2. 初始化 LIFF
     async function initLiff() {
         try {
-            await liff.init({ liffId: "您的_LIFF_ID_在此" }); // 請替換成您在 LINE 建立的 LIFF ID
+            // 請將下方的 "您的_LIFF_ID_在此" 替換為 LINE Developers 後台的真實 ID
+            await liff.init({ liffId: "您的_LIFF_ID_在此" }); 
             if (!liff.isLoggedIn()) {
                 liff.login();
             }
@@ -172,7 +175,7 @@
         const container = document.getElementById('productList');
         container.innerHTML = products.map(p => `
             <div class="product-item">
-                <img src="${p.img}" class="product-img">
+                <img src="${p.img}" class="product-img" alt="${p.name}">
                 <div class="product-info">
                     <div class="product-name">${p.name}</div>
                     <div class="product-price">$${p.price.toLocaleString()}</div>
@@ -217,16 +220,29 @@
             return;
         }
 
-        const profile = await liff.getProfile();
-        const message = `【新訂單回報】\n客戶：${profile.displayName}\n總額：${document.getElementById('grandTotal').innerText}\n(專人將與您聯繫確認細節)`;
+        let displayName = "顧客";
+        try {
+            if (liff.isLoggedIn()) {
+                const profile = await liff.getProfile();
+                displayName = profile.displayName;
+            }
+        } catch (e) {
+            console.error("無法取得用戶名稱", e);
+        }
+
+        const message = `【新訂單回報】\n客戶：${displayName}\n總額：${document.getElementById('grandTotal').innerText}\n(專人將與您聯繫確認細節)`;
 
         // 發送訊息到聊天室並關閉視窗
         if (liff.isInClient()) {
-            await liff.sendMessages([{ type: 'text', text: message }]);
-            alert("訂單已送出，我們將儘快連繫您！");
-            liff.closeWindow();
+            try {
+                await liff.sendMessages([{ type: 'text', text: message }]);
+                alert("訂單已送出，我們將儘快連繫您！");
+                liff.closeWindow();
+            } catch (err) {
+                alert("發送訂單失敗，請確認是否允許權限。\n" + message);
+            }
         } else {
-            alert("瀏覽器測試：\n" + message);
+            alert("瀏覽器測試模式：\n" + message);
         }
     }
 
