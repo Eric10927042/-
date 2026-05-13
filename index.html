@@ -1,367 +1,523 @@
+# 佐登妮絲 LIFF 推廣商城（新版設計）
+
+```html
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>佐登妮絲城堡｜專屬美容回購中心</title>
 
-<title>佐登妮絲城堡｜專屬回購商城</title>
-
-<!-- 正確的 LIFF SDK -->
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
-<style>
-:root{
-    --gold:#b8955e;
-    --bg:#f7f4ef;
-    --text:#333;
-    --red:#e74c3c;
-}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
+<style>
 *{
+    margin:0;
+    padding:0;
     box-sizing:border-box;
 }
 
+:root{
+    --gold:#b89a62;
+    --gold-dark:#8c7448;
+    --bg:#f7f4ef;
+    --text:#333;
+    --soft:#8d8d8d;
+    --red:#d94f4f;
+    --white:#fff;
+}
+
 body{
-    margin:0;
-    font-family:
-    "PingFang TC",
-    "Microsoft JhengHei",
-    sans-serif;
+    font-family:'Noto Sans TC',sans-serif;
     background:var(--bg);
     color:var(--text);
-    padding-bottom:160px;
+    line-height:1.6;
 }
 
-/* Header */
-
-header{
-    background:white;
-    padding:20px;
-    text-align:center;
-    box-shadow:0 2px 10px rgba(0,0,0,0.05);
-    position:sticky;
-    top:0;
-    z-index:999;
-}
-
-.logo{
-    font-size:24px;
-    font-weight:bold;
-    color:var(--gold);
-}
-
-.sub{
-    font-size:13px;
-    margin-top:4px;
-    color:#777;
-}
-
-/* Banner */
-
-.banner{
-    background:var(--red);
-    color:white;
-    text-align:center;
-    padding:8px;
-    font-weight:bold;
-    font-size:14px;
-}
-
-/* User */
-
-.user-box{
-    background:white;
-    margin:15px;
-    padding:15px;
-    border-radius:14px;
-    box-shadow:0 2px 5px rgba(0,0,0,0.05);
-}
-
-.user-name{
-    font-weight:bold;
-    margin-bottom:5px;
-}
-
-/* Product */
-
-.product-list{
-    padding:15px;
-}
-
-.product-item{
-    background:white;
-    border-radius:16px;
-    overflow:hidden;
-    margin-bottom:16px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.05);
-}
-
-.product-img{
+img{
     width:100%;
-    height:220px;
-    object-fit:cover;
     display:block;
 }
 
+.hero{
+    position:relative;
+    height:420px;
+    overflow:hidden;
+}
+
+.hero img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:brightness(0.65);
+}
+
+.hero-content{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    color:white;
+    width:90%;
+}
+
+.brand{
+    font-size:15px;
+    letter-spacing:3px;
+    margin-bottom:12px;
+}
+
+.hero-title{
+    font-size:38px;
+    font-weight:900;
+    margin-bottom:12px;
+}
+
+.hero-sub{
+    font-size:15px;
+    opacity:0.95;
+}
+
+.notice-bar{
+    background:linear-gradient(90deg,var(--gold),var(--gold-dark));
+    color:white;
+    padding:12px;
+    text-align:center;
+    font-weight:700;
+    font-size:14px;
+}
+
+.container{
+    padding:20px;
+    max-width:900px;
+    margin:auto;
+}
+
+.card{
+    background:white;
+    border-radius:24px;
+    padding:24px;
+    margin-bottom:20px;
+    box-shadow:0 8px 30px rgba(0,0,0,0.06);
+}
+
+.section-title{
+    font-size:24px;
+    font-weight:900;
+    margin-bottom:18px;
+    color:var(--gold-dark);
+}
+
+.campaign-grid{
+    display:grid;
+    gap:16px;
+}
+
+.campaign-item{
+    border:1px solid #eee;
+    border-radius:18px;
+    padding:18px;
+    background:#fffdf9;
+}
+
+.campaign-badge{
+    display:inline-block;
+    background:var(--red);
+    color:white;
+    padding:6px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.campaign-title{
+    font-size:20px;
+    font-weight:800;
+    margin-bottom:8px;
+}
+
+.campaign-desc{
+    color:#666;
+    font-size:14px;
+}
+
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:18px;
+}
+
+.product-card{
+    overflow:hidden;
+    border-radius:20px;
+    background:white;
+    border:1px solid #f1f1f1;
+}
+
+.product-image{
+    height:240px;
+    overflow:hidden;
+}
+
+.product-image img{
+    height:100%;
+    object-fit:cover;
+}
+
 .product-content{
-    padding:15px;
+    padding:18px;
 }
 
 .product-name{
-    font-size:17px;
-    font-weight:bold;
+    font-size:18px;
+    font-weight:800;
     margin-bottom:8px;
 }
 
 .product-desc{
-    font-size:13px;
+    font-size:14px;
     color:#777;
-    line-height:1.6;
-    margin-bottom:10px;
+    margin-bottom:14px;
+    min-height:44px;
 }
 
-.product-bottom{
+.price-row{
     display:flex;
     justify-content:space-between;
     align-items:center;
 }
 
-.product-price{
-    color:var(--gold);
-    font-size:20px;
-    font-weight:bold;
-}
-
-.qty-box{
-    display:flex;
-    align-items:center;
-}
-
-.qty-btn{
-    width:30px;
-    height:30px;
-    border:none;
-    border-radius:8px;
-    background:var(--gold);
-    color:white;
-    font-size:18px;
-    cursor:pointer;
-}
-
-.qty-num{
-    width:40px;
-    text-align:center;
-    font-weight:bold;
-}
-
-/* Footer */
-
-.footer-cart{
-    position:fixed;
-    bottom:0;
-    width:100%;
-    background:white;
-    padding:20px;
-    box-shadow:0 -2px 15px rgba(0,0,0,0.1);
-}
-
-.summary{
-    margin-bottom:12px;
-}
-
-.row{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:8px;
-}
-
-.discount{
-    color:var(--red);
-}
-
-.total{
+.price{
+    color:var(--gold-dark);
     font-size:22px;
-    font-weight:bold;
+    font-weight:900;
 }
 
-.checkout-btn{
-    width:100%;
+.shipping-box{
+    background:linear-gradient(135deg,#fffaf0,#f8f1e6);
+    border:1px solid #eadfc7;
+    border-radius:20px;
+    padding:18px;
+}
+
+.shipping-item{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px dashed #d7c8a9;
+}
+
+.shipping-item:last-child{
+    border-bottom:none;
+}
+
+.contact-box{
+    text-align:center;
+}
+
+.contact-text{
+    color:#666;
+    margin-bottom:18px;
+}
+
+.contact-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    justify-content:center;
+}
+
+.btn{
     border:none;
-    background:var(--gold);
-    color:white;
-    padding:15px;
-    border-radius:40px;
-    font-size:18px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.checkout-btn:active{
-    transform:scale(0.98);
-}
-
-/* Inputs */
-
-.form-box{
-    background:white;
-    margin:15px;
-    padding:15px;
-    border-radius:14px;
-    box-shadow:0 2px 5px rgba(0,0,0,0.05);
-}
-
-.form-title{
-    font-weight:bold;
-    margin-bottom:10px;
-}
-
-.input{
-    width:100%;
-    padding:12px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    margin-bottom:12px;
+    border-radius:999px;
+    padding:15px 24px;
     font-size:15px;
+    font-weight:800;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    transition:0.2s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-gold{
+    background:linear-gradient(90deg,var(--gold),var(--gold-dark));
+    color:white;
+}
+
+.btn-line{
+    background:#06C755;
+    color:white;
+}
+
+.btn-phone{
+    background:#333;
+    color:white;
+}
+
+.footer{
+    text-align:center;
+    padding:40px 20px;
+    color:#888;
+    font-size:13px;
+}
+
+@media(max-width:640px){
+
+    .hero{
+        height:360px;
+    }
+
+    .hero-title{
+        font-size:30px;
+    }
+
+    .card{
+        padding:20px;
+    }
+
 }
 </style>
 </head>
-
 <body>
 
-<header>
-    <div class="logo">佐登妮絲城堡</div>
-    <div class="sub">專屬回購商城</div>
-</header>
+<section class="hero">
 
-<div class="banner">
-    🎉 限時活動｜買千折百
-</div>
+    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop" alt="美容保養">
 
-<div class="user-box">
-    <div class="user-name" id="welcomeText">
-        LINE 會員登入中...
-    </div>
+    <div class="hero-content">
 
-    <div style="font-size:13px;color:#777;">
-        回購快速下單系統
-    </div>
-</div>
-
-<div class="form-box">
-    <div class="form-title">
-        收件資訊
-    </div>
-
-    <input
-        class="input"
-        id="phone"
-        type="tel"
-        placeholder="手機號碼"
-    >
-
-    <input
-        class="input"
-        id="address"
-        type="text"
-        placeholder="收件地址"
-    >
-</div>
-
-<div class="product-list" id="productList"></div>
-
-<div class="footer-cart">
-
-    <div class="summary">
-
-        <div class="row">
-            <span>商品金額</span>
-            <span id="subtotal">$0</span>
+        <div class="brand">
+            JOURDENESS BEAUTY
         </div>
 
-        <div class="row discount">
-            <span>活動折抵</span>
-            <span id="discount">-$0</span>
+        <div class="hero-title">
+            佐登妮絲城堡
         </div>
 
-        <div class="row total">
-            <span>總計</span>
-            <span id="grandTotal">$0</span>
+        <div class="hero-sub">
+            專屬美容保養｜最新活動｜快速回購服務
         </div>
 
     </div>
 
-    <button
-        class="checkout-btn"
-        onclick="checkout()"
-    >
-        立即下單
-    </button>
+</section>
 
+<div class="notice-bar">
+    🎉 本月限定活動：滿 $3000 免運＋贈保濕面膜
+</div>
+
+<div class="container">
+
+    <section class="card">
+
+        <div class="section-title">
+            最新優惠活動
+        </div>
+
+        <div class="campaign-grid">
+
+            <div class="campaign-item">
+
+                <div class="campaign-badge">
+                    HOT 活動
+                </div>
+
+                <div class="campaign-title">
+                    買千折百
+                </div>
+
+                <div class="campaign-desc">
+                    單筆消費每滿 NT$1000 現折 NT$100，回購越多優惠越高。
+                </div>
+
+            </div>
+
+            <div class="campaign-item">
+
+                <div class="campaign-badge">
+                    VIP 限定
+                </div>
+
+                <div class="campaign-title">
+                    滿額免運
+                </div>
+
+                <div class="campaign-desc">
+                    單筆消費滿 NT$3000 即享全台免運服務。
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="card">
+
+        <div class="section-title">
+            熱門回購商品
+        </div>
+
+        <div class="product-grid">
+
+            <div class="product-card">
+
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=800&auto=format&fit=crop">
+                </div>
+
+                <div class="product-content">
+
+                    <div class="product-name">
+                        龍血求麗精華 30ml
+                    </div>
+
+                    <div class="product-desc">
+                        修護乾燥肌膚、提升保濕與肌膚光澤感。
+                    </div>
+
+                    <div class="price-row">
+                        <div class="price">
+                            NT$1,190
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="product-card">
+
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?q=80&w=800&auto=format&fit=crop">
+                </div>
+
+                <div class="product-content">
+
+                    <div class="product-name">
+                        極光白面膜
+                    </div>
+
+                    <div class="product-desc">
+                        改善暗沉與乾燥，打造透亮水潤肌。
+                    </div>
+
+                    <div class="price-row">
+                        <div class="price">
+                            NT$600
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="product-card">
+
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=800&auto=format&fit=crop">
+                </div>
+
+                <div class="product-content">
+
+                    <div class="product-name">
+                        玫瑰妝前乳
+                    </div>
+
+                    <div class="product-desc">
+                        妝前保濕提亮，讓底妝更加服貼自然。
+                    </div>
+
+                    <div class="price-row">
+                        <div class="price">
+                            NT$1,230
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="card">
+
+        <div class="section-title">
+            運費方案
+        </div>
+
+        <div class="shipping-box">
+
+            <div class="shipping-item">
+                <div>未滿 NT$3000</div>
+                <div>運費 NT$80</div>
+            </div>
+
+            <div class="shipping-item">
+                <div>滿 NT$3000</div>
+                <div>免運費</div>
+            </div>
+
+            <div class="shipping-item">
+                <div>離島配送</div>
+                <div>另行報價</div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="card contact-box">
+
+        <div class="section-title">
+            專人諮詢服務
+        </div>
+
+        <div class="contact-text">
+            想了解產品、優惠或肌膚建議，可直接聯繫美容顧問。
+        </div>
+
+        <div class="contact-buttons">
+
+            <a href="tel:0912345678" class="btn btn-phone">
+                📞 撥打電話
+            </a>
+
+            <a href="https://line.me/R/ti/p/@yourlineid" class="btn btn-line">
+                LINE 線上詢問
+            </a>
+
+            <a href="#" class="btn btn-gold">
+                查看最新活動
+            </a>
+
+        </div>
+
+    </section>
+
+</div>
+
+<div class="footer">
+    © Jourdeness Beauty｜佐登妮絲城堡
 </div>
 
 <script>
 
-/* =========================
-   LIFF ID
-========================= */
-
-const LIFF_ID = "2010070207-JlGbaJp2";
-
-/* =========================
-   商品資料
-========================= */
-
-const products = [
-
-{
-    id:1,
-    name:"龍血求麗精華 30ml",
-    desc:"修護、保濕、穩定肌膚",
-    price:1190,
-    img:"https://picsum.photos/seed/p1/600/600"
-},
-
-{
-    id:2,
-    name:"極光白美白面膜",
-    desc:"亮白透亮、保濕修護",
-    price:600,
-    img:"https://picsum.photos/seed/p2/600/600"
-},
-
-{
-    id:3,
-    name:"玫瑰妝前乳",
-    desc:"妝感服貼、自然透亮",
-    price:1230,
-    img:"https://picsum.photos/seed/p3/600/600"
-}
-
-];
-
-/* =========================
-   購物車
-========================= */
-
-let cart = {};
-
-let currentUserName = "顧客";
-
-/* =========================
-   初始化
-========================= */
-
-window.onload = async () => {
-
-    renderProducts();
-
-    await initLiff();
-
-};
-
-/* =========================
-   LIFF 初始化
-========================= */
+const LIFF_ID = '2010070207-JlGbaJp2';
 
 async function initLiff(){
 
@@ -371,277 +527,45 @@ async function initLiff(){
             liffId: LIFF_ID
         });
 
-        if(!liff.isLoggedIn()){
-
-            liff.login();
-
-            return;
-        }
-
-        const profile = await liff.getProfile();
-
-        currentUserName = profile.displayName;
-
-        document.getElementById("welcomeText")
-        .innerText =
-        `歡迎回來，${currentUserName}`;
-
     }catch(err){
 
-        console.error(err);
-
-        document.getElementById("welcomeText")
-        .innerText =
-        "LINE 登入失敗";
+        console.log(err);
     }
 }
 
-/* =========================
-   渲染商品
-========================= */
-
-function renderProducts(){
-
-    const container =
-    document.getElementById("productList");
-
-    container.innerHTML =
-    products.map(p => `
-
-    <div class="product-item">
-
-        <img
-            class="product-img"
-            src="${p.img}"
-            alt="${p.name}"
-        >
-
-        <div class="product-content">
-
-            <div class="product-name">
-                ${p.name}
-            </div>
-
-            <div class="product-desc">
-                ${p.desc}
-            </div>
-
-            <div class="product-bottom">
-
-                <div class="product-price">
-                    $${p.price.toLocaleString()}
-                </div>
-
-                <div class="qty-box">
-
-                    <button
-                        class="qty-btn"
-                        onclick="updateQty(${p.id}, -1)"
-                    >
-                        -
-                    </button>
-
-                    <div
-                        class="qty-num"
-                        id="qty-${p.id}"
-                    >
-                        0
-                    </div>
-
-                    <button
-                        class="qty-btn"
-                        onclick="updateQty(${p.id}, 1)"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    `).join("");
-}
-
-/* =========================
-   更新數量
-========================= */
-
-function updateQty(id, change){
-
-    cart[id] = (cart[id] || 0) + change;
-
-    if(cart[id] < 0){
-
-        cart[id] = 0;
-    }
-
-    document.getElementById(
-        `qty-${id}`
-    ).innerText = cart[id];
-
-    calculateTotal();
-}
-
-/* =========================
-   計算金額
-========================= */
-
-function calculateTotal(){
-
-    let subtotal = 0;
-
-    products.forEach(p => {
-
-        subtotal +=
-        (cart[p.id] || 0) * p.price;
-
-    });
-
-    const discount =
-    Math.floor(subtotal / 1000) * 100;
-
-    const grandTotal =
-    subtotal - discount;
-
-    document.getElementById("subtotal")
-    .innerText =
-    `$${subtotal.toLocaleString()}`;
-
-    document.getElementById("discount")
-    .innerText =
-    `-$${discount.toLocaleString()}`;
-
-    document.getElementById("grandTotal")
-    .innerText =
-    `$${grandTotal.toLocaleString()}`;
-}
-
-/* =========================
-   建立訂單內容
-========================= */
-
-function buildOrderText(){
-
-    let text = "";
-
-    products.forEach(p => {
-
-        const qty = cart[p.id] || 0;
-
-        if(qty > 0){
-
-            text +=
-            `${p.name} x${qty}\n`;
-        }
-    });
-
-    return text;
-}
-
-/* =========================
-   下單
-========================= */
-
-async function checkout(){
-
-    const phone =
-    document.getElementById("phone").value;
-
-    const address =
-    document.getElementById("address").value;
-
-    if(!phone){
-
-        alert("請輸入手機號碼");
-
-        return;
-    }
-
-    if(!address){
-
-        alert("請輸入收件地址");
-
-        return;
-    }
-
-    let subtotal = 0;
-
-    Object.values(cart).forEach(qty => {
-
-        subtotal += qty;
-    });
-
-    if(subtotal <= 0){
-
-        alert("請先選擇商品");
-
-        return;
-    }
-
-    const orderText =
-    buildOrderText();
-
-    const total =
-    document.getElementById(
-        "grandTotal"
-    ).innerText;
-
-    const message =
-`【新訂單通知】
-
-客戶姓名：
-${currentUserName}
-
-手機：
-${phone}
-
-收件地址：
-${address}
-
-訂單內容：
-${orderText}
-
-訂單總額：
-${total}
-
-請盡快聯繫客戶確認。`;
-
-    try{
-
-        if(liff.isInClient()){
-
-            await liff.sendMessages([
-                {
-                    type:"text",
-                    text:message
-                }
-            ]);
-
-            alert("訂單已成功送出");
-
-            liff.closeWindow();
-
-        }else{
-
-            alert(message);
-        }
-
-    }catch(err){
-
-        console.error(err);
-
-        alert(
-            "訂單送出失敗\n\n" +
-            err
-        );
-    }
+window.onload = () => {
+    initLiff();
 }
 
 </script>
 
 </body>
 </html>
+```
+
+---
+
+# 建議你之後加入的功能
+
+## 第一階段（現在）
+
+* 活動頁
+* 商品展示
+* 價格
+* 運費
+* 電話聯繫
+* LINE 詢問
+
+## 第二階段
+
+* 熱門商品輪播
+* 會員登入
+* Google Sheet 表單
+* 美容顧問預約
+
+## 第三階段
+
+* LINE 官方帳號串接
+* AI 肌膚分析
+* 自動推播優惠
+* 回購提醒
