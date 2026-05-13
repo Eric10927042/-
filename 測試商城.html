@@ -1,252 +1,646 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>佐登妮絲城堡 - 專屬回購商城</title>
-    <!-- 引入 LINE LIFF SDK (已修正為完整 HTTPS 官方路徑) -->
-    <script charset="utf-8" src="line-scdn.net"></script>
-    <style>
-        :root {
-            --primary-gold: #b8955e;
-            --bg-color: #f9f7f2;
-            --text-dark: #4a4a4a;
-        }
-        body {
-            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-dark);
-            margin: 0;
-            padding-bottom: 140px; 
-        }
-        header {
-            background: white;
-            text-align: center;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .promo-banner {
-            background-color: #e74c3c;
-            color: white;
-            text-align: center;
-            padding: 5px;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-        .product-list {
-            padding: 15px;
-        }
-        .product-item {
-            background: white;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .product-img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-right: 15px;
-            background-color: #eee;
-        }
-        .product-info {
-            flex-grow: 1;
-        }
-        .product-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .product-price {
-            color: var(--primary-gold);
-            font-weight: bold;
-        }
-        .quantity-control {
-            display: flex;
-            align-items: center;
-        }
-        .btn-qty {
-            border: 1px solid #ddd;
-            background: white;
-            width: 25px;
-            height: 25px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .qty-num {
-            margin: 0 10px;
-            min-width: 20px;
-            text-align: center;
-        }
-        .footer-cart {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: white;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            padding: 15px 20px;
-            box-sizing: border-box;
-            z-index: 1000;
-        }
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            font-size: 0.9em;
-        }
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.2em;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-        .checkout-btn {
-            background-color: var(--primary-gold);
-            color: white;
-            width: 100%;
-            border: none;
-            padding: 12px;
-            border-radius: 25px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .discount-text { color: #e74c3c; }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>佐登妮絲城堡｜專屬回購商城</title>
+
+<!-- 正確的 LIFF SDK -->
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+<style>
+:root{
+    --gold:#b8955e;
+    --bg:#f7f4ef;
+    --text:#333;
+    --red:#e74c3c;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:
+    "PingFang TC",
+    "Microsoft JhengHei",
+    sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    padding-bottom:160px;
+}
+
+/* Header */
+
+header{
+    background:white;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    position:sticky;
+    top:0;
+    z-index:999;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+    color:var(--gold);
+}
+
+.sub{
+    font-size:13px;
+    margin-top:4px;
+    color:#777;
+}
+
+/* Banner */
+
+.banner{
+    background:var(--red);
+    color:white;
+    text-align:center;
+    padding:8px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+/* User */
+
+.user-box{
+    background:white;
+    margin:15px;
+    padding:15px;
+    border-radius:14px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.05);
+}
+
+.user-name{
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+/* Product */
+
+.product-list{
+    padding:15px;
+}
+
+.product-item{
+    background:white;
+    border-radius:16px;
+    overflow:hidden;
+    margin-bottom:16px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+
+.product-img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    display:block;
+}
+
+.product-content{
+    padding:15px;
+}
+
+.product-name{
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.product-desc{
+    font-size:13px;
+    color:#777;
+    line-height:1.6;
+    margin-bottom:10px;
+}
+
+.product-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.product-price{
+    color:var(--gold);
+    font-size:20px;
+    font-weight:bold;
+}
+
+.qty-box{
+    display:flex;
+    align-items:center;
+}
+
+.qty-btn{
+    width:30px;
+    height:30px;
+    border:none;
+    border-radius:8px;
+    background:var(--gold);
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.qty-num{
+    width:40px;
+    text-align:center;
+    font-weight:bold;
+}
+
+/* Footer */
+
+.footer-cart{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:white;
+    padding:20px;
+    box-shadow:0 -2px 15px rgba(0,0,0,0.1);
+}
+
+.summary{
+    margin-bottom:12px;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+}
+
+.discount{
+    color:var(--red);
+}
+
+.total{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.checkout-btn{
+    width:100%;
+    border:none;
+    background:var(--gold);
+    color:white;
+    padding:15px;
+    border-radius:40px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.checkout-btn:active{
+    transform:scale(0.98);
+}
+
+/* Inputs */
+
+.form-box{
+    background:white;
+    margin:15px;
+    padding:15px;
+    border-radius:14px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.05);
+}
+
+.form-title{
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    margin-bottom:12px;
+    font-size:15px;
+}
+</style>
 </head>
+
 <body>
 
 <header>
-    <h2 style="margin:0; color:var(--primary-gold);">佐登妮絲城堡</h2>
-    <div style="font-size: 0.8em;">專屬回購商城</div>
+    <div class="logo">佐登妮絲城堡</div>
+    <div class="sub">專屬回購商城</div>
 </header>
-<div class="promo-banner">現在下單 買千折百 優惠</div>
+
+<div class="banner">
+    🎉 限時活動｜買千折百
+</div>
+
+<div class="user-box">
+    <div class="user-name" id="welcomeText">
+        LINE 會員登入中...
+    </div>
+
+    <div style="font-size:13px;color:#777;">
+        回購快速下單系統
+    </div>
+</div>
+
+<div class="form-box">
+    <div class="form-title">
+        收件資訊
+    </div>
+
+    <input
+        class="input"
+        id="phone"
+        type="tel"
+        placeholder="手機號碼"
+    >
+
+    <input
+        class="input"
+        id="address"
+        type="text"
+        placeholder="收件地址"
+    >
+</div>
 
 <div class="product-list" id="productList"></div>
 
 <div class="footer-cart">
-    <div class="summary-row">
-        <span>目金額</span>
-        <span id="subtotal">$0</span>
+
+    <div class="summary">
+
+        <div class="row">
+            <span>商品金額</span>
+            <span id="subtotal">$0</span>
+        </div>
+
+        <div class="row discount">
+            <span>活動折抵</span>
+            <span id="discount">-$0</span>
+        </div>
+
+        <div class="row total">
+            <span>總計</span>
+            <span id="grandTotal">$0</span>
+        </div>
+
     </div>
-    <div class="summary-row discount-text">
-        <span>活動折抵 (滿千折百)</span>
-        <span id="discount">-$0</span>
-    </div>
-    <div class="total-row">
-        <span>結帳總計</span>
-        <span id="grandTotal">$0</span>
-    </div>
-    <button class="checkout-btn" onclick="handleCheckout()">立即下單</button>
+
+    <button
+        class="checkout-btn"
+        onclick="checkout()"
+    >
+        立即下單
+    </button>
+
 </div>
 
 <script>
-    // 1. 產品資料定義 (已修正為高畫質正方形測試圖)
-    const products = [
-        { id: 1, name: "龍血求麗精華 30ml", price: 1190, img: "picsum.photos" },
-        { id: 2, name: "極光白美白面膜", price: 600, img: "picsum.photos" },
-        { id: 3, name: "玫瑰妝前乳", price: 1230, img: "picsum.photos" }
-    ];
 
-    let cart = {};
+/* =========================
+   LIFF ID
+========================= */
 
-    // 2. 初始化 LIFF (使用您提供的真實 ID)
-    async function initLiff() {
-        try {
-            await liff.init({ liffId: "2005144930" }); 
-            if (!liff.isLoggedIn()) {
-                liff.login();
-            }
-        } catch (error) {
-            console.error("LIFF 初始化失敗", error);
-        }
-    }
+const LIFF_ID = "165xxxxxxxxx-xxxxx";
 
-    // 3. 渲染產品列表
-    function renderProducts() {
-        const container = document.getElementById('productList');
-        container.innerHTML = products.map(p => `
-            <div class="product-item">
-                <img src="${p.img}" class="product-img" alt="${p.name}">
-                <div class="product-info">
-                    <div class="product-name">${p.name}</div>
-                    <div class="product-price">$${p.price.toLocaleString()}</div>
-                </div>
-                <div class="quantity-control">
-                    <button class="btn-qty" onclick="updateQty(${p.id}, -1)">-</button>
-                    <span class="qty-num" id="qty-${p.id}">0</span>
-                    <button class="btn-qty" onclick="updateQty(${p.id}, 1)">+</button>
-                </div>
-            </div>
-        `).join('');
-    }
+/* =========================
+   商品資料
+========================= */
 
-    // 4. 更新數量與計算金額
-    function updateQty(id, change) {
-        cart[id] = (cart[id] || 0) + change;
-        if (cart[id] < 0) cart[id] = 0;
-        document.getElementById(`qty-${id}`).innerText = cart[id];
-        calculateTotal();
-    }
+const products = [
 
-    function calculateTotal() {
-        let subtotal = 0;
-        products.forEach(p => {
-            subtotal += (cart[p.id] || 0) * p.price;
+{
+    id:1,
+    name:"龍血求麗精華 30ml",
+    desc:"修護、保濕、穩定肌膚",
+    price:1190,
+    img:"https://picsum.photos/seed/p1/600/600"
+},
+
+{
+    id:2,
+    name:"極光白美白面膜",
+    desc:"亮白透亮、保濕修護",
+    price:600,
+    img:"https://picsum.photos/seed/p2/600/600"
+},
+
+{
+    id:3,
+    name:"玫瑰妝前乳",
+    desc:"妝感服貼、自然透亮",
+    price:1230,
+    img:"https://picsum.photos/seed/p3/600/600"
+}
+
+];
+
+/* =========================
+   購物車
+========================= */
+
+let cart = {};
+
+let currentUserName = "顧客";
+
+/* =========================
+   初始化
+========================= */
+
+window.onload = async () => {
+
+    renderProducts();
+
+    await initLiff();
+
+};
+
+/* =========================
+   LIFF 初始化
+========================= */
+
+async function initLiff(){
+
+    try{
+
+        await liff.init({
+            liffId: LIFF_ID
         });
 
-        // 買千折百邏輯
-        let discount = Math.floor(subtotal / 1000) * 100;
-        let grandTotal = subtotal - discount;
+        if(!liff.isLoggedIn()){
 
-        document.getElementById('subtotal').innerText = `$${subtotal.toLocaleString()}`;
-        document.getElementById('discount').innerText = `-$${discount.toLocaleString()}`;
-        document.getElementById('grandTotal').innerText = `$${grandTotal.toLocaleString()}`;
-    }
+            liff.login();
 
-    // 5. 處理下單
-    async function handleCheckout() {
-        const subtotal = parseInt(document.getElementById('subtotal').innerText.replace('$', '').replace(',', ''));
-        if (subtotal === 0) {
-            alert("請先選擇商品");
             return;
         }
 
-        let displayName = "顧客";
-        try {
-            if (liff.isLoggedIn()) {
-                const profile = await liff.getProfile();
-                displayName = profile.displayName;
-            }
-        } catch (e) {
-            console.error("無法取得用戶名稱", e);
-        }
+        const profile = await liff.getProfile();
 
-        const message = `【新訂單回報】\n客戶：${displayName}\n總額：${document.getElementById('grandTotal').innerText}\n(專人將與您聯繫確認細節)`;
+        currentUserName = profile.displayName;
 
-        if (liff.isInClient()) {
-            try {
-                // 執行此步驟前，必須確保您的 LINE Login 頻道有開啟 "chat_message.write" 權限
-                await liff.sendMessages([{ type: 'text', text: message }]);
-                alert("訂單已送出，我們將儘快連繫您！");
-                liff.closeWindow();
-            } catch (err) {
-                alert("發送訂單失敗，請確認是否允許權限。\n" + message);
-            }
-        } else {
-            alert("瀏覽器測試模式：\n" + message);
-        }
+        document.getElementById("welcomeText")
+        .innerText =
+        `歡迎回來，${currentUserName}`;
+
+    }catch(err){
+
+        console.error(err);
+
+        document.getElementById("welcomeText")
+        .innerText =
+        "LINE 登入失敗";
+    }
+}
+
+/* =========================
+   渲染商品
+========================= */
+
+function renderProducts(){
+
+    const container =
+    document.getElementById("productList");
+
+    container.innerHTML =
+    products.map(p => `
+
+    <div class="product-item">
+
+        <img
+            class="product-img"
+            src="${p.img}"
+            alt="${p.name}"
+        >
+
+        <div class="product-content">
+
+            <div class="product-name">
+                ${p.name}
+            </div>
+
+            <div class="product-desc">
+                ${p.desc}
+            </div>
+
+            <div class="product-bottom">
+
+                <div class="product-price">
+                    $${p.price.toLocaleString()}
+                </div>
+
+                <div class="qty-box">
+
+                    <button
+                        class="qty-btn"
+                        onclick="updateQty(${p.id}, -1)"
+                    >
+                        -
+                    </button>
+
+                    <div
+                        class="qty-num"
+                        id="qty-${p.id}"
+                    >
+                        0
+                    </div>
+
+                    <button
+                        class="qty-btn"
+                        onclick="updateQty(${p.id}, 1)"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    `).join("");
+}
+
+/* =========================
+   更新數量
+========================= */
+
+function updateQty(id, change){
+
+    cart[id] = (cart[id] || 0) + change;
+
+    if(cart[id] < 0){
+
+        cart[id] = 0;
     }
 
-    window.onload = () => {
-        initLiff();
-        renderProducts();
-    };
+    document.getElementById(
+        `qty-${id}`
+    ).innerText = cart[id];
+
+    calculateTotal();
+}
+
+/* =========================
+   計算金額
+========================= */
+
+function calculateTotal(){
+
+    let subtotal = 0;
+
+    products.forEach(p => {
+
+        subtotal +=
+        (cart[p.id] || 0) * p.price;
+
+    });
+
+    const discount =
+    Math.floor(subtotal / 1000) * 100;
+
+    const grandTotal =
+    subtotal - discount;
+
+    document.getElementById("subtotal")
+    .innerText =
+    `$${subtotal.toLocaleString()}`;
+
+    document.getElementById("discount")
+    .innerText =
+    `-$${discount.toLocaleString()}`;
+
+    document.getElementById("grandTotal")
+    .innerText =
+    `$${grandTotal.toLocaleString()}`;
+}
+
+/* =========================
+   建立訂單內容
+========================= */
+
+function buildOrderText(){
+
+    let text = "";
+
+    products.forEach(p => {
+
+        const qty = cart[p.id] || 0;
+
+        if(qty > 0){
+
+            text +=
+            `${p.name} x${qty}\n`;
+        }
+    });
+
+    return text;
+}
+
+/* =========================
+   下單
+========================= */
+
+async function checkout(){
+
+    const phone =
+    document.getElementById("phone").value;
+
+    const address =
+    document.getElementById("address").value;
+
+    if(!phone){
+
+        alert("請輸入手機號碼");
+
+        return;
+    }
+
+    if(!address){
+
+        alert("請輸入收件地址");
+
+        return;
+    }
+
+    let subtotal = 0;
+
+    Object.values(cart).forEach(qty => {
+
+        subtotal += qty;
+    });
+
+    if(subtotal <= 0){
+
+        alert("請先選擇商品");
+
+        return;
+    }
+
+    const orderText =
+    buildOrderText();
+
+    const total =
+    document.getElementById(
+        "grandTotal"
+    ).innerText;
+
+    const message =
+`【新訂單通知】
+
+客戶姓名：
+${currentUserName}
+
+手機：
+${phone}
+
+收件地址：
+${address}
+
+訂單內容：
+${orderText}
+
+訂單總額：
+${total}
+
+請盡快聯繫客戶確認。`;
+
+    try{
+
+        if(liff.isInClient()){
+
+            await liff.sendMessages([
+                {
+                    type:"text",
+                    text:message
+                }
+            ]);
+
+            alert("訂單已成功送出");
+
+            liff.closeWindow();
+
+        }else{
+
+            alert(message);
+        }
+
+    }catch(err){
+
+        console.error(err);
+
+        alert(
+            "訂單送出失敗\n\n" +
+            err
+        );
+    }
+}
+
 </script>
 
 </body>
